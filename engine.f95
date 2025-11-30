@@ -7,7 +7,7 @@ program engine
     character, allocatable :: b1(:),b2(:),b3(:)
     character, allocatable :: c1(:),c2(:),c3(:)
     character(len=2) :: selLoc,currPlayer
-    character :: selPiece
+    character :: selPiece, currBlockedPiece
     logical :: selWrongLoc, game, allGood, selWrongPiece
     integer :: i, timesPlayed
     real :: round
@@ -41,7 +41,7 @@ program engine
 
     
 
-
+    currBlockedPiece = ""
     selWrongPiece = .false.
     selWrongLoc = .false.
     round = 0.5
@@ -74,6 +74,8 @@ program engine
         call system("clear")
         
         write(*,'(A)')currPlayer
+        write(*,'(A)',advance='no') "Blocked piece: "
+        write(*,'(A)') currBlockedPiece
         call printInv
         if (selWrongLoc .eqv. .true.)  then
             write(*,'(A)') "Error: invalid location"
@@ -121,54 +123,59 @@ program engine
 
         select case(piece)
             case ("b")
-                if (playr%inventory%bAmnt > 0) then 
+                if ((playr%inventory%bAmnt > 0) .and. (currBlockedPiece/="b")) then 
                     playr%inventory%bAmnt = playr%inventory%bAmnt - 1
                     res = .true.
                     selWrongPiece = .false.
+                    currBlockedPiece = "b"
                     return 
                 else 
                     selWrongPiece = .true.
                     res = .false.
                     return
                 end if
-            case("y") 
-                if (playr%inventory%yAmnt > 0) then 
+            case ("y")
+                if ((playr%inventory%yAmnt > 0) .and. (currBlockedPiece/="y")) then 
                     playr%inventory%yAmnt = playr%inventory%yAmnt - 1
                     res = .true.
                     selWrongPiece = .false.
-                    return 
-                else 
-                    selWrongPiece = .true.
-                    res = .false.
-                    return
-                end if     
-            case("g") 
-                if (playr%inventory%gAmnt > 0) then 
-                    playr%inventory%gAmnt = playr%inventory%gAmnt - 1
-                    res = .true.
-                    selWrongPiece = .false.
+                    currBlockedPiece = "y"
                     return 
                 else 
                     selWrongPiece = .true.
                     res = .false.
                     return
                 end if
-            case("p") 
-                if (playr%inventory%pAmnt > 0) then 
-                    playr%inventory%pAmnt = playr%inventory%pAmnt - 1
+            case ("g")
+                if ((playr%inventory%gAmnt > 0) .and. (currBlockedPiece/="g")) then 
+                    playr%inventory%gAmnt = playr%inventory%gAmnt - 1
                     res = .true.
                     selWrongPiece = .false.
+                    currBlockedPiece = "g"
                     return 
                 else 
                     selWrongPiece = .true.
                     res = .false.
                     return
-                end if   
-            case("r") 
-                if (playr%inventory%rAmnt > 0) then 
+                end if
+            case ("p")
+                if ((playr%inventory%pAmnt > 0) .and. (currBlockedPiece/="p")) then 
+                    playr%inventory%pAmnt = playr%inventory%pAmnt - 1
+                    res = .true.
+                    selWrongPiece = .false.
+                    currBlockedPiece = "p"
+                    return 
+                else 
+                    selWrongPiece = .true.
+                    res = .false.
+                    return
+                end if
+            case ("r")
+                if ((playr%inventory%rAmnt > 0) .and. (currBlockedPiece/="r")) then 
                     playr%inventory%rAmnt = playr%inventory%rAmnt - 1
                     res = .true.
                     selWrongPiece = .false.
+                    currBlockedPiece = "r"
                     return 
                 else 
                     selWrongPiece = .true.
