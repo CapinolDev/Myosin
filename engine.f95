@@ -9,6 +9,7 @@ program engine
     character(len=2) :: selLoc,currPlayer
     character :: selPiece, currBlockedPiece
     logical :: selWrongLoc, game, allGood, selWrongPiece
+    logical :: Blocked1, Blocked2, Blocked3,Blocked4,Blocked5,Blocked6,Blocked7,Blocked8
     integer :: i, timesPlayed
     real :: round
 
@@ -38,14 +39,26 @@ program engine
     allocate(a1(1)); allocate(a2(1)); allocate(a3(1));
     allocate(b1(1)); allocate(b2(1)); allocate(b3(1)); 
     allocate(c1(1)); allocate(c2(1)); allocate(c3(1));
-
     
+    a1(1) = "X"; a2(1) = "X"; a3(1) = "X"
+    b1(1) = "X"; b2(1) = "X"; b3(1) = "X"    
+    c1(1) = "X"; c2(1) = "X"; c3(1) = "X"
+
+    Blocked1 = .false.
+    Blocked2 = .false.
+    Blocked3 = .false.
+    Blocked4 = .false.
+    Blocked5 = .false.
+    Blocked6 = .false.
+    Blocked7 = .false.
+    Blocked8 = .false.
 
     currBlockedPiece = ""
     selWrongPiece = .false.
     selWrongLoc = .false.
     round = 0.5
     do while (game)
+        
         if ((selWrongPiece.eqv. .false.) .and. (selWrongLoc.eqv..false.)) then 
             if (round == 0.5) then 
                 currPlayer = "p1"
@@ -73,7 +86,10 @@ program engine
 
         call system("clear")
         
-        write(*,'(A)')currPlayer
+        write(*,'(A)',advance = 'no')currPlayer
+        write(*,'(A)',advance = 'no')": "
+        write(*,'(I0)') currP%points
+
         write(*,'(A)',advance='no') "Blocked piece: "
         write(*,'(A)') currBlockedPiece
         call printInv
@@ -94,7 +110,9 @@ program engine
         
         if (allGood) then 
             call resolveInput(selLoc,selPiece)
+            call checkForConnection
             round = round + 0.5
+
         end if
 
         
@@ -257,5 +275,57 @@ program engine
 
 
     end subroutine
+    subroutine checkForConnection
+        if ((a1(size(a1)))==(b1(size(b1))).and.(c1(size(c1)))==(a1(size(a1))).and.(blocked1 .eqv. .false.).and.(a1(size(a1))/="X")) then 
+            currP%points = currP%points + 1 
+            blocked1 = .true.
+        end if
+
+
+        if ((a2(size(a2)))==(b2(size(b2))).and.(c2(size(c2)))==(a2(size(a2))).and.(blocked2 .eqv. .false.).and.(a2(size(a2))/="X")) then 
+            currP%points = currP%points + 1 
+            blocked2 = .true.
+        end if
+
+
+        if ((a3(size(a3)))==(b3(size(b3))).and.(c3(size(c3)))==(a3(size(a3))).and.(blocked3 .eqv. .false.).and.(a3(size(a3))/="X")) then 
+            currP%points = currP%points + 1 
+            Blocked3 = .true.
+        end if
+
+        if ((a3(size(a3)))==(b2(size(b2))).and.(c1(size(c1)))==(a3(size(a3))).and.(blocked4 .eqv. .false.).and.(a3(size(a3))/="X")) then 
+            currP%points = currP%points + 1 
+            Blocked4= .true.
+        end if
+
+
+        if ((a1(size(a1)))==(a2(size(a2))).and.(a3(size(a3)))==(a2(size(a2))).and.(blocked5 .eqv. .false.).and.(a1(size(a1))/="X")) then 
+            currP%points = currP%points + 1 
+            blocked5 = .true.
+        end if
+
+
+        if ((b1(size(b1)))==(b2(size(b2))).and.(b3(size(b3)))==(b2(size(b2))).and.(blocked6 .eqv. .false.).and.(b1(size(b1))/="X")) then 
+            currP%points = currP%points + 1 
+            blocked6 = .true.
+        end if
+
+        if ((c1(size(c1)))==(c2(size(c2))).and.(c3(size(c3)))==(c2(size(c2))).and.(blocked7 .eqv. .false.).and.(c1(size(c1))/="X")) then 
+            currP%points = currP%points + 1 
+            blocked7 = .true.
+        end if
+
+        if ((a1(size(a1)))==(b2(size(b2))).and.(c3(size(c3)))==(a1(size(a1))).and.(blocked8 .eqv. .false.).and.(a1(size(a1))/="X")) then 
+            currP%points = currP%points + 1 
+            Blocked8 = .true.
+        end if
+
+         
+        
+
+        
+    end subroutine
+
+
 
 end program engine
