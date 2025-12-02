@@ -1,4 +1,3 @@
-
 program engine
 
     implicit none
@@ -83,7 +82,11 @@ program engine
             
             
         end if
-        
+    
+        if (checkForEnd()) then 
+            game = .false.
+            cycle
+        end if
 
         call system("clear")
         
@@ -119,6 +122,8 @@ program engine
 
         
     end do
+
+    print*,'Game end'
 
     contains
 
@@ -458,4 +463,30 @@ program engine
     end subroutine
 
 
+    function checkForEnd() result(res)
+        logical :: res
+
+        res = .false.
+        
+        if ((currP%inventory%pAmnt == 0).and.(currBlockedPiece=="p")) then 
+            res = .true.
+            return
+        end if
+        if ((currP%inventory%bAmnt == 0).and.(currBlockedPiece=="b")) then 
+            res = .true.
+            return
+        end if
+        if ((currP%inventory%gAmnt == 0).and.(currBlockedPiece=="g")) then 
+            res = .true.
+            return
+        end if
+        if ((currP%inventory%yAmnt == 0).and.(currBlockedPiece=="y")) then 
+            res = .true.
+            return
+        end if
+        if ((currP%inventory%rAmnt == 0).and.(currBlockedPiece=="r")) then 
+            res = .true.
+            return
+        end if
+    end function
 end program engine
